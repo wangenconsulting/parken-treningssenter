@@ -1,0 +1,124 @@
+---
+const faqs = [
+  {
+    question: "Hvordan melder jeg meg inn?",
+    answer:
+      'Du melder deg inn via vår nettside på <a href="https://parkentrening.ibooking.no/nettinnmelding" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">parkentrening.ibooking.no</a>. Registreringen er rask og enkel.',
+  },
+  {
+    question: "Hvordan sier jeg opp medlemskapet?",
+    answer:
+      'Du sier opp medlemskapet direkte i Membro-appen. Last ned appen fra <a href="https://apps.apple.com/no/app/membro/id1494498242" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">App Store</a> eller <a href="https://play.google.com/store/apps/details?id=com.membro.app" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Google Play</a>, logg inn og følg instruksjonene for oppsigelse.',
+  },
+  {
+    question: "Er det bindingstid?",
+    answer:
+      "Nei, det er ingen bindingstid hos Parken Treningssenter. Du kan melde deg inn og si opp når som helst.",
+  },
+  {
+    question: "Hva er åpningstidene?",
+    answer:
+      "Vi har døgnåpent! Parken Treningssenter er åpent 24 timer i døgnet, 7 dager i uken. Du kan trene akkurat når det passer deg.",
+  },
+  {
+    question: "Hva koster det?",
+    answer:
+      'For oppdaterte priser, se vår <a href="https://parkentrening.ibooking.no/nettinnmelding" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">innmeldingsside</a>. Vi er kjent for å ha lave priser.',
+  },
+  {
+    question: "Har dere personlig trener?",
+    answer:
+      "Ja, eier Espen har bred kunnskap om trening og kan hjelpe med veiledning og treningsråd.",
+  },
+  {
+    question: "Hva er Membro-appen?",
+    answer:
+      "Membro er appen vi bruker for administrasjon av medlemskap. Her kan du administrere kontoen din, se betalingsinformasjon og si opp medlemskapet.",
+  },
+  {
+    question: "Hvor finner jeg dere?",
+    answer:
+      'Vi holder til i Torvhusmyrane 18, 5913 Eikanger. Du finner oss enkelt via <a href="https://maps.google.com/?q=Torvhusmyrane+18,+5913+Eikanger" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Google Maps</a>.',
+  },
+];
+---
+
+<section id="faq" class="py-20 md:py-28">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="section-heading">
+      Ofte stilte <span class="text-brand-green">spørsmål</span>
+    </h2>
+
+    <div class="space-y-3">
+      {
+        faqs.map((faq, index) => (
+          <div class="faq-item border border-white/10 rounded-xl overflow-hidden">
+            <button
+              class="faq-toggle w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors duration-200"
+              aria-expanded="false"
+              aria-controls={`faq-answer-${index}`}
+            >
+              <span class="font-semibold text-lg pr-4">{faq.question}</span>
+              <svg
+                class="faq-chevron w-5 h-5 text-brand-green flex-shrink-0 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div
+              id={`faq-answer-${index}`}
+              class="faq-answer hidden"
+            >
+              <div class="px-6 pb-6 text-gray-400 leading-relaxed">
+                <Fragment set:html={faq.answer} />
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll(".faq-toggle").forEach((button) => {
+    button.addEventListener("click", () => {
+      const item = button.closest(".faq-item");
+      const answer = item?.querySelector(".faq-answer");
+      const chevron = item?.querySelector(".faq-chevron");
+      const isOpen = answer?.classList.contains("hidden") === false;
+
+      // Close all others
+      document.querySelectorAll(".faq-item").forEach((otherItem) => {
+        if (otherItem !== item) {
+          otherItem.querySelector(".faq-answer")?.classList.add("hidden");
+          otherItem
+            .querySelector(".faq-chevron")
+            ?.classList.remove("rotate-180");
+          otherItem
+            .querySelector(".faq-toggle")
+            ?.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      // Toggle current
+      if (isOpen) {
+        answer?.classList.add("hidden");
+        chevron?.classList.remove("rotate-180");
+        button.setAttribute("aria-expanded", "false");
+      } else {
+        answer?.classList.remove("hidden");
+        chevron?.classList.add("rotate-180");
+        button.setAttribute("aria-expanded", "true");
+      }
+    });
+  });
+</script>

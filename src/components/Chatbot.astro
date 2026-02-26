@@ -1,0 +1,279 @@
+---
+---
+
+<div id="chatbot">
+  <!-- Floating chat button -->
+  <button
+    id="chat-toggle"
+    class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-brand-green text-black rounded-full shadow-lg hover:bg-green-400 transition-colors duration-200 flex items-center justify-center"
+    aria-label="Åpne chat"
+  >
+    <svg id="chat-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+    <svg id="chat-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+
+  <!-- Chat panel -->
+  <div
+    id="chat-panel"
+    class="fixed bottom-24 right-6 z-50 w-[360px] max-sm:bottom-0 max-sm:right-0 max-sm:w-full max-sm:h-full bg-brand-gray border border-white/10 rounded-2xl max-sm:rounded-none shadow-2xl flex-col overflow-hidden hidden"
+    role="dialog"
+    aria-label="Chat med Parken Treningssenter"
+  >
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 py-3 bg-brand-dark border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-brand-green rounded-full flex items-center justify-center">
+          <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <div>
+          <p class="font-semibold text-sm text-white">Parken Treningssenter</p>
+          <p class="text-xs text-gray-400">Spør oss om hva som helst</p>
+        </div>
+      </div>
+      <button
+        id="chat-close"
+        class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-gray-400 hover:text-white"
+        aria-label="Lukk chat"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3" style="height: calc(100% - 130px); min-height: 300px;">
+    </div>
+
+    <!-- Input -->
+    <div class="border-t border-white/10 p-3">
+      <form id="chat-form" class="flex gap-2">
+        <label for="chat-input" class="sr-only">Skriv en melding</label>
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Skriv en melding..."
+          autocomplete="off"
+          class="flex-1 bg-brand-dark border border-white/10 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-brand-green transition-colors"
+        />
+        <button
+          type="submit"
+          class="w-10 h-10 bg-brand-green text-black rounded-lg flex items-center justify-center hover:bg-green-400 transition-colors flex-shrink-0"
+          aria-label="Send melding"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const knowledgeBase = [
+    {
+      keywords: ["melde inn", "innmelding", "registrere", "bli medlem", "signup", "meld meg inn", "meld inn", "medlem", "starte"],
+      answer: 'Du melder deg inn via vår nettside. Registreringen er rask og enkel — ingen bindingstid!\n\n<a href="https://parkentrening.ibooking.no/nettinnmelding" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Meld deg inn her &rarr;</a>',
+    },
+    {
+      keywords: ["si opp", "oppsigelse", "avslutte", "kansellere", "avslut", "slutte", "stoppe"],
+      answer: 'Du sier opp medlemskapet direkte i Membro-appen. Last ned appen, logg inn, og følg instruksjonene for oppsigelse.\n\n<a href="https://apps.apple.com/no/app/membro/id1494498242" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.membro.app" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Google Play</a>',
+    },
+    {
+      keywords: ["binding", "bindingstid", "kontrakt", "avtale", "binde", "forplikte"],
+      answer: "Nei, det er ingen bindingstid hos oss! Du kan melde deg inn og si opp når som helst, helt uten forpliktelser.",
+    },
+    {
+      keywords: ["åpningstid", "åpent", "stengt", "timer", "24", "døgnåpent", "tid", "åpne", "lukke", "lukket", "når"],
+      answer: "Vi har døgnåpent! Parken Treningssenter er åpent 24 timer i døgnet, 7 dager i uken. Du kan trene akkurat når det passer deg. 💪",
+    },
+    {
+      keywords: ["pris", "kost", "betale", "billig", "kr", "hva koster", "dyr", "beløp", "avgift", "månedlig"],
+      answer: 'Vi er kjent for å ha lave priser. For oppdaterte priser og medlemskap, se vår innmeldingsside.\n\n<a href="https://parkentrening.ibooking.no/nettinnmelding" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Se priser &rarr;</a>',
+    },
+    {
+      keywords: ["personlig trener", "pt", "veiledning", "trener", "trenerhjelp", "treningsråd", "program"],
+      answer: "Ja, eier Espen har bred kunnskap om trening og kan hjelpe med veiledning og treningsråd. Ikke nøl med å ta kontakt!",
+    },
+    {
+      keywords: ["membro", "app", "appen", "applikasjon", "applikasjonen"],
+      answer: 'Membro er appen vi bruker for administrasjon av medlemskap. Her kan du administrere kontoen din, se betalingsinformasjon og si opp medlemskapet.\n\n<a href="https://apps.apple.com/no/app/membro/id1494498242" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.membro.app" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Google Play</a>',
+    },
+    {
+      keywords: ["adresse", "hvor", "finne", "kart", "lokasjon", "beliggenhet", "veibeskrivelse", "ligger"],
+      answer: 'Vi holder til i Torvhusmyrane 18, 5913 Eikanger.\n\n<a href="https://maps.google.com/?q=Torvhusmyrane+18,+5913+Eikanger" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Vis i Google Maps &rarr;</a>',
+    },
+    {
+      keywords: ["kontakt", "epost", "telefon", "ring", "mail", "e-post", "nå dere", "snakke med"],
+      answer: 'Du kan kontakte oss på:\n\nEpost: espen@parkentreningssenter.no\n\nDu finner oss også på <a href="https://www.facebook.com/profile.php?id=100063629467247" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Facebook</a> og <a href="https://www.instagram.com/parkentreningssenter/" target="_blank" rel="noopener noreferrer" class="text-brand-green hover:underline">Instagram</a>.',
+    },
+    {
+      keywords: ["utstyr", "apparater", "maskiner", "vekter", "treningsapparater", "fasiliteter", "tilbud"],
+      answer: 'Vi har et bredt utvalg av treningsutstyr inkludert frivekter, maskiner og kardioutstyr. Sjekk ut vår <a href="#facilities" class="text-brand-green hover:underline">fasilitetsseksjon</a> for mer info!',
+    },
+  ];
+
+  const fallbackAnswer = 'Beklager, jeg fant ikke et svar på det. Du kan sjekke vår <a href="#faq" class="text-brand-green hover:underline">FAQ-seksjon</a> eller kontakte oss på espen@parkentreningssenter.no for mer hjelp.';
+
+  const quickReplies = [
+    { label: "Bli medlem", query: "bli medlem" },
+    { label: "Si opp", query: "si opp" },
+    { label: "Åpningstider", query: "åpningstider" },
+    { label: "Priser", query: "priser" },
+  ];
+
+  const toggleBtn = document.getElementById("chat-toggle")!;
+  const panel = document.getElementById("chat-panel")!;
+  const closeBtn = document.getElementById("chat-close")!;
+  const messagesEl = document.getElementById("chat-messages")!;
+  const form = document.getElementById("chat-form") as HTMLFormElement;
+  const input = document.getElementById("chat-input") as HTMLInputElement;
+  const iconOpen = document.getElementById("chat-icon-open")!;
+  const iconClose = document.getElementById("chat-icon-close")!;
+
+  let isOpen = false;
+  let hasInitialized = false;
+
+  function openChat() {
+    isOpen = true;
+    panel.classList.remove("hidden");
+    panel.classList.add("flex");
+    iconOpen.classList.add("hidden");
+    iconClose.classList.remove("hidden");
+    toggleBtn.setAttribute("aria-label", "Lukk chat");
+    input.focus();
+
+    if (!hasInitialized) {
+      hasInitialized = true;
+      addBotMessage("Hei! 👋 Jeg kan hjelpe deg med spørsmål om Parken Treningssenter. Velg et tema eller skriv et spørsmål.");
+      addQuickReplies();
+    }
+  }
+
+  function closeChat() {
+    isOpen = false;
+    panel.classList.add("hidden");
+    panel.classList.remove("flex");
+    iconOpen.classList.remove("hidden");
+    iconClose.classList.add("hidden");
+    toggleBtn.setAttribute("aria-label", "Åpne chat");
+    toggleBtn.focus();
+  }
+
+  function toggleChat() {
+    if (isOpen) closeChat();
+    else openChat();
+  }
+
+  function addBotMessage(html: string) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex gap-2 items-start";
+
+    const avatar = document.createElement("div");
+    avatar.className = "w-7 h-7 bg-brand-green rounded-full flex items-center justify-center flex-shrink-0 mt-0.5";
+    avatar.innerHTML = '<svg class="w-3.5 h-3.5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>';
+
+    const bubble = document.createElement("div");
+    bubble.className = "bg-brand-dark border border-white/10 rounded-xl rounded-tl-sm px-3 py-2 text-sm text-gray-200 leading-relaxed max-w-[85%]";
+    bubble.innerHTML = html.replace(/\n/g, "<br>");
+
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(bubble);
+    messagesEl.appendChild(wrapper);
+    scrollToBottom();
+  }
+
+  function addUserMessage(text: string) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex justify-end";
+
+    const bubble = document.createElement("div");
+    bubble.className = "bg-brand-green text-black rounded-xl rounded-tr-sm px-3 py-2 text-sm font-medium max-w-[85%]";
+    bubble.textContent = text;
+
+    wrapper.appendChild(bubble);
+    messagesEl.appendChild(wrapper);
+    scrollToBottom();
+  }
+
+  function addQuickReplies() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex flex-wrap gap-2 chat-quick-replies";
+
+    quickReplies.forEach((qr) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "px-3 py-1.5 text-xs font-medium border border-brand-green text-brand-green rounded-full hover:bg-brand-green hover:text-black transition-colors";
+      btn.textContent = qr.label;
+      btn.addEventListener("click", () => {
+        handleQuery(qr.query, qr.label);
+      });
+      wrapper.appendChild(btn);
+    });
+
+    messagesEl.appendChild(wrapper);
+    scrollToBottom();
+  }
+
+  function removeQuickReplies() {
+    messagesEl.querySelectorAll(".chat-quick-replies").forEach((el) => el.remove());
+  }
+
+  function scrollToBottom() {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function findAnswer(query: string): string {
+    const normalized = query.toLowerCase().trim();
+
+    let bestMatch: { answer: string; score: number } | null = null;
+
+    for (const entry of knowledgeBase) {
+      let score = 0;
+      for (const keyword of entry.keywords) {
+        if (normalized.includes(keyword)) {
+          score += keyword.length;
+        }
+      }
+      if (score > 0 && (!bestMatch || score > bestMatch.score)) {
+        bestMatch = { answer: entry.answer, score };
+      }
+    }
+
+    return bestMatch ? bestMatch.answer : fallbackAnswer;
+  }
+
+  function handleQuery(query: string, displayText?: string) {
+    removeQuickReplies();
+    addUserMessage(displayText || query);
+
+    setTimeout(() => {
+      const answer = findAnswer(query);
+      addBotMessage(answer);
+    }, 400);
+  }
+
+  toggleBtn.addEventListener("click", toggleChat);
+  closeBtn.addEventListener("click", closeChat);
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const query = input.value.trim();
+    if (!query) return;
+    input.value = "";
+    handleQuery(query);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isOpen) {
+      closeChat();
+    }
+  });
+</script>

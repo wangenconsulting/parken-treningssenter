@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-brand-dark text-white font-sans;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-brand-green text-black font-bold rounded-lg
+           hover:bg-green-400 transition-colors duration-200 text-lg;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-3 border-2 border-brand-green text-brand-green font-bold rounded-lg
+           hover:bg-brand-green hover:text-black transition-colors duration-200 text-lg;
+  }
+
+  .section-heading {
+    @apply text-3xl md:text-4xl font-bold text-center mb-12;
+  }
+}

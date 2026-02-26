@@ -1,0 +1,125 @@
+---
+const navLinks = [
+  { href: "#om-oss", label: "Om oss" },
+  { href: "#fasiliteter", label: "Fasiliteter" },
+  { href: "#medlemskap", label: "Medlemskap" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#kontakt", label: "Kontakt" },
+];
+---
+
+<nav
+  class="fixed top-0 left-0 right-0 z-50 bg-brand-dark/95 backdrop-blur-sm border-b border-white/10"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo -->
+      <a href="#" class="flex-shrink-0">
+        <img
+          src="/images/logo.png"
+          alt="Parken Treningssenter"
+          class="h-12 w-auto"
+        />
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center gap-8">
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              class="text-gray-300 hover:text-brand-green transition-colors duration-200 font-medium"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        <a
+          href="https://parkentrening.ibooking.no/nettinnmelding"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary text-base px-6 py-2"
+        >
+          Bli medlem
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden text-white p-2"
+        aria-label="Meny"
+        aria-expanded="false"
+      >
+        <svg
+          class="w-7 h-7"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            id="menu-icon"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"></path>
+          <path
+            id="close-icon"
+            class="hidden"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-white/10">
+    <div class="px-4 py-4 space-y-3">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="mobile-nav-link block text-gray-300 hover:text-brand-green transition-colors duration-200 font-medium py-2"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href="https://parkentrening.ibooking.no/nettinnmelding"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary block text-center mt-4 text-base px-6 py-2"
+      >
+        Bli medlem
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const menuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuIcon = document.getElementById("menu-icon");
+  const closeIcon = document.getElementById("close-icon");
+
+  menuBtn?.addEventListener("click", () => {
+    const isOpen = mobileMenu?.classList.toggle("hidden");
+    menuIcon?.classList.toggle("hidden");
+    closeIcon?.classList.toggle("hidden");
+    menuBtn.setAttribute("aria-expanded", isOpen ? "false" : "true");
+  });
+
+  // Close mobile menu when clicking a link
+  document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu?.classList.add("hidden");
+      menuIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("hidden");
+      menuBtn?.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>

@@ -102,7 +102,7 @@ fi
 # Step 4: Enable GitHub Pages with Actions as source
 print_step "Enabling GitHub Pages..."
 if gh api \
-    --method PUT \
+    --method POST \
     -H "Accept: application/vnd.github+json" \
     "/repos/$GITHUB_ORG/$SITE_NAME/pages" \
     -f "build_type=workflow" 2>/dev/null; then

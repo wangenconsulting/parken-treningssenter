@@ -1,0 +1,21 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import "../styles/global.css";
+---
+
+<Layout title="Side ikke funnet | Parken Treningssenter">
+  <Navbar />
+  <main id="hovedinnhold" class="min-h-screen flex items-center justify-center pt-20">
+    <div class="text-center px-4">
+      <p class="text-8xl font-black text-brand-green mb-4">404</p>
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">Siden ble ikke funnet</h1>
+      <p class="text-gray-400 text-lg mb-8 max-w-md mx-auto">
+        Beklager, vi fant ikke siden du leter etter. Den kan ha blitt flyttet eller slettet.
+      </p>
+      <a href={`${import.meta.env.BASE_URL}/`} class="btn-primary">
+        Tilbake til forsiden
+      </a>
+    </div>
+  </main>
+</Layout>

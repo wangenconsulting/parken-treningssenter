@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wangenconsulting.github.io/parken-treningssenter/sitemap-index.xml

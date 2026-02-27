@@ -6,8 +6,11 @@ interface Props {
 
 const {
   title,
-  description = "Parken Treningssenter - 24/7 treningssenter i Eikanger. Ingen binding, lav pris. Meld deg inn i dag!",
+  description = "Parken Treningssenter i Eikanger – døgnåpent treningssenter med styrke- og kondisjonsutstyr, personlig trener og ingen bindingstid. Lav pris, åpent 24/7. Meld deg inn i dag!",
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(`${import.meta.env.BASE_URL}/images/logo.png`, Astro.site);
 ---
 
 <!doctype html>
@@ -16,16 +19,43 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="geo.region" content="NO-46" />
+    <meta name="geo.placename" content="Eikanger" />
+    <meta name="geo.position" content="60.5836;5.3567" />
+    <meta name="ICBM" content="60.5836, 5.3567" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalURL} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={`${import.meta.env.BASE_URL}/images/logo.png`} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="nb_NO" />
+    <meta property="og:site_name" content="Parken Treningssenter" />
 
-    <!-- Favicon -->
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}/images/apple-touch-icon.png`} />
+
+    <!-- Preload LCP image -->
+    <link rel="preload" as="image" href={`${import.meta.env.BASE_URL}/images/logo.png`} fetchpriority="high" />
+
+    <!-- DNS Prefetch for third-party domains -->
+    <link rel="dns-prefetch" href="https://parkentrening.ibooking.no" />
+    <link rel="dns-prefetch" href="https://www.google.com" />
+    <link rel="dns-prefetch" href="https://maps.google.com" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,11 +63,190 @@ const {
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <title>{title}</title>
+
+    <!-- LocalBusiness Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthClub",
+      "name": "Parken Treningssenter",
+      "description": "Døgnåpent treningssenter i Eikanger med styrke- og kondisjonsutstyr, personlig trener og ingen bindingstid.",
+      "url": "https://wangenconsulting.github.io/parken-treningssenter",
+      "telephone": "+4795088357",
+      "email": "parkentreningssenter@outlook.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Torvhusmyrane 18",
+        "addressLocality": "Eikanger",
+        "postalCode": "5913",
+        "addressRegion": "Vestland",
+        "addressCountry": "NO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 60.5836,
+        "longitude": 5.3567
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday", "Thursday",
+          "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "priceRange": "$",
+      "currenciesAccepted": "NOK",
+      "image": "https://wangenconsulting.github.io/parken-treningssenter/images/logo.png",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=100063629467247",
+        "https://www.instagram.com/parkentreningssenter/"
+      ],
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Eikanger"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Nordhordland"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Alver kommune"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Treningsmedlemskap",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Treningsmedlemskap",
+              "description": "Fullt medlemskap med 24/7 tilgang, ingen bindingstid"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Personlig trener",
+              "description": "Personlig trener med høyere utdanning innen helsefag"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+
+    <!-- FAQPage Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Hvordan melder jeg meg inn?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Du melder deg inn via vår nettside på parkentrening.ibooking.no. Registreringen er rask og enkel. Ved innmelding betaler du for resterende inneværende måned pluss neste måned (forskuddsbetaling)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hvordan sier jeg opp medlemskapet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Du sier opp medlemskapet direkte i Membro-appen. Last ned appen fra App Store eller Google Play, logg inn og følg instruksjonene for oppsigelse. Oppsigelsestiden er 1 måned gjeldende fra den 1. i påfølgende måned."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Er det bindingstid?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nei, det er ingen bindingstid hos Parken Treningssenter. Du kan melde deg inn og si opp når som helst."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hva er åpningstidene?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Vi har døgnåpent! Parken Treningssenter er åpent 24 timer i døgnet, 7 dager i uken. Du kan trene akkurat når det passer deg."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hva koster det?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For oppdaterte priser, se vår innmeldingsside. Vi er kjent for å ha lave priser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Har dere personlig trener?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja, vi har dyktige og erfarne personlige trenere med bred erfaring og høyere utdanning innen helsefag."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hva er Membro-appen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Membro er appen vi bruker for administrasjon av medlemskap. Her kan du administrere kontoen din, se betalingsinformasjon og si opp medlemskapet. I tillegg gir appen deg tilgang til senteret med mobil døråpning rett fra telefonen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Tilbyr dere prøvetime?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nei, vi tilbyr dessverre ikke prøvetimer. Men med ingen bindingstid kan du melde deg inn og prøve oss helt uforpliktende."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kan jeg fryse medlemskapet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Vi tilbyr ikke frysing av medlemskap. Dersom du ønsker en pause, kan du si opp og melde deg inn igjen når du er klar for å trene."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hvor finner jeg dere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Vi holder til i Torvhusmyrane 18, 5913 Eikanger. Du finner oss enkelt via Google Maps."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
+    <a href="#hovedinnhold" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-brand-green focus:text-black focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold">
+      Hopp til hovedinnhold
+    </a>
     <slot />
   </body>
 </html>

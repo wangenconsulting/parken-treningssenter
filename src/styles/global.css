@@ -11,6 +11,10 @@
   body {
     @apply bg-brand-dark text-white font-sans;
   }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-green;
+  }
 }
 
 @layer components {

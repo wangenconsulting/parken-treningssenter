@@ -6,4 +6,5 @@ export default defineConfig({
   integrations: [tailwind(), sitemap()],
   output: "static",
   site: "https://parkentreningssenter.no",
+  base: "/",
 });

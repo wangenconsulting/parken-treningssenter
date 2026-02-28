@@ -252,12 +252,22 @@ const ogImage = new URL("/images/logo.png", Astro.site);
         var ua = navigator.userAgent || '';
         var platform = navigator.platform || '';
         var cls = 'platform-desktop';
+        var storeUrl = '';
         if (/iPad|iPhone|iPod/.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
           cls = 'platform-ios';
+          storeUrl = 'https://apps.apple.com/no/app/membro/id1542602956';
         } else if (/Android/i.test(ua)) {
           cls = 'platform-android';
+          storeUrl = 'https://play.google.com/store/apps/details?id=no.ibooking.membroapp&hl=en';
         }
         document.documentElement.classList.add(cls);
+        if (storeUrl) {
+          document.querySelectorAll('.app-download-btn').forEach(function(el) {
+            el.href = storeUrl;
+            el.target = '_blank';
+            el.rel = 'noopener noreferrer';
+          });
+        }
       })();
     </script>
   </body>

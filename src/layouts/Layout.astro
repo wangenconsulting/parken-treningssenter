@@ -247,5 +247,18 @@ const ogImage = new URL("/images/logo.png", Astro.site);
       Hopp til hovedinnhold
     </a>
     <slot />
+    <script is:inline>
+      (function() {
+        var ua = navigator.userAgent || '';
+        var platform = navigator.platform || '';
+        var cls = 'platform-desktop';
+        if (/iPad|iPhone|iPod/.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+          cls = 'platform-ios';
+        } else if (/Android/i.test(ua)) {
+          cls = 'platform-android';
+        }
+        document.documentElement.classList.add(cls);
+      })();
+    </script>
   </body>
 </html>

@@ -32,3 +32,7 @@
     @apply text-3xl md:text-4xl font-bold text-center mb-12;
   }
 }
+
+/* Platform-aware app store link visibility */
+.platform-ios .google-play-link { display: none !important; }
+.platform-android .app-store-link { display: none !important; }
